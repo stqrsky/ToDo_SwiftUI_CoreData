@@ -7,10 +7,34 @@
 
 import SwiftUI
 
+struct TodoItem: Identifiable {
+    let id = UUID()
+    let title: String
+}
+
 struct ContentView: View {
+    @State private var todoItems: [TodoItem] = [
+        .init(title: "Item 1"),
+        .init(title: "Item 2")
+    ]
+
+    
     var body: some View {
-        Text("Hello, world!")
-            .padding()
+        NavigationView {
+            List (todoItems) { todoItems in
+                Text(todoItems.title)
+            }
+            .navigationTitle("ToDo's")
+            .toolbar {
+                ToolbarItem(placement: .primaryAction) {
+                    Button(action: {
+                        todoItems.append(.init(title: "Item \((0...9).randomElement()!)"))
+                    }, label: {
+                        Image(systemName: "plus")
+                    })
+                }
+            }
+        }
     }
 }
 
