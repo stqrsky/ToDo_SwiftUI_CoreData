@@ -12,6 +12,7 @@
 		F89A070A2837ADAD0008EF4F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F89A07092837ADAD0008EF4F /* Assets.xcassets */; };
 		F89A070D2837ADAD0008EF4F /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F89A070C2837ADAD0008EF4F /* Preview Assets.xcassets */; };
 		F89A07152837B92A0008EF4F /* ToDo_SwiftUI_CoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = F89A07132837B92A0008EF4F /* ToDo_SwiftUI_CoreData.xcdatamodeld */; };
+		F89A07172837BCBA0008EF4F /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F89A07162837BCBA0008EF4F /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,7 @@
 		F89A07092837ADAD0008EF4F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F89A070C2837ADAD0008EF4F /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		F89A07142837B92A0008EF4F /* ToDo_SwiftUI_CoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ToDo_SwiftUI_CoreData.xcdatamodel; sourceTree = "<group>"; };
+		F89A07162837BCBA0008EF4F /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,9 +57,10 @@
 			children = (
 				F89A07052837ADA90008EF4F /* ToDo_SwiftUI_CoreDataApp.swift */,
 				F89A07072837ADA90008EF4F /* ContentView.swift */,
-				F89A07132837B92A0008EF4F /* ToDo_SwiftUI_CoreData.xcdatamodeld */,
 				F89A07092837ADAD0008EF4F /* Assets.xcassets */,
 				F89A070B2837ADAD0008EF4F /* Preview Content */,
+				F89A07132837B92A0008EF4F /* ToDo_SwiftUI_CoreData.xcdatamodeld */,
+				F89A07162837BCBA0008EF4F /* CoreDataManager.swift */,
 			);
 			path = ToDo_SwiftUI_CoreData;
 			sourceTree = "<group>";
@@ -142,6 +145,7 @@
 			files = (
 				F89A07082837ADA90008EF4F /* ContentView.swift in Sources */,
 				F89A07062837ADA90008EF4F /* ToDo_SwiftUI_CoreDataApp.swift in Sources */,
+				F89A07172837BCBA0008EF4F /* CoreDataManager.swift in Sources */,
 				F89A07152837B92A0008EF4F /* ToDo_SwiftUI_CoreData.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
