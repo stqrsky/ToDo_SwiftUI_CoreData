@@ -31,24 +31,16 @@ struct ContentView: View {
                         Text(task.title ?? "N/A")
                     }
                 }
-                .onDelete(perform: { indexSet in
-                    var tasksToDelete = Array<Task>()
-                    
-                    for index in indexSet {
-                        tasksToDelete.append(tasks[index])
-                    }
-                    
-                    for task in tasksToDelete {
-                        viewContext.delete(task)
-                    }
-                    
-                    try? viewContext.save()
-                })
+                .onDelete(perform: deleteItems)
             }
             
             .listStyle(PlainListStyle())
             .navigationTitle("ToDo's")
             .toolbar {
+                ToolbarItem(placement: .navigationBarLeading) {
+                    EditButton()
+                        .disabled(tasks.isEmpty)
+                }
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: {
                         presentSheet.toggle()
@@ -62,6 +54,29 @@ struct ContentView: View {
             })
         }
     }
+    
+    func deleteItems(offsets: IndexSet) {
+        offsets.map { tasks[$0] }.forEach(viewContext.delete)
+        
+        
+        // #2 way
+//        tasksToDelete.forEach { task in
+//            viewContext.delete(task)
+//        }
+        // #1 way
+//        var tasksToDelete = Array<Task>()
+//
+//        for index in offsets {
+//            tasksToDelete.append(tasks[index])
+//        }
+//
+//        for task in tasksToDelete {
+//            viewContext.delete(task)
+//        }
+        
+        try? viewContext.save()
+    }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
