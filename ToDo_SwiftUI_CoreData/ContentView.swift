@@ -7,12 +7,19 @@
 
 import SwiftUI
 
+enum ActiveSheet: Identifiable {
+    var id: UUID { UUID() }
+    
+    case addView
+    case updateView
+}
+
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
     
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Task.priority, ascending: false), NSSortDescriptor(keyPath: \Task.timestamp, ascending: true)]) var tasks: FetchedResults<Task>
     
-    @State private var presentSheet = false
+    @State private var activeSheet: ActiveSheet? = nil
     private var priorityRepresentation = ["", "!!", "!!!"]
     
     var body: some View {
@@ -27,15 +34,20 @@ struct ContentView: View {
                     }
                     ToolbarItem(placement: .primaryAction) {
                         Button(action: {
-                            presentSheet.toggle()
+                            activeSheet = .addView
                         }, label: {
                             Image(systemName: "plus")
                         })
                     }
                 }
-                .sheet(isPresented: $presentSheet, content: {
-                    AddTaskView()
-                })
+                .sheet(item: $activeSheet) { activeSheet in
+                    switch activeSheet {
+                    case .addView:
+                        AddTaskView()
+                    case .updateView:
+                        Text("Update")
+                    }
+                }
         }
     }
     
