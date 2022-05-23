@@ -11,13 +11,16 @@ enum ActiveSheet: Identifiable {
     var id: UUID { UUID() }
     
     case addView
-    case updateView
+    case updateView(task: Task?)
 }
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
     
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Task.priority, ascending: false), NSSortDescriptor(keyPath: \Task.timestamp, ascending: true)]) var tasks: FetchedResults<Task>
+    @FetchRequest(sortDescriptors:
+        [NSSortDescriptor(keyPath: \Task.priority, ascending: false),
+         NSSortDescriptor(keyPath: \Task.timestamp, ascending: true)])
+    var tasks: FetchedResults<Task>
     
     @State private var activeSheet: ActiveSheet? = nil
     private var priorityRepresentation = ["", "!!", "!!!"]
@@ -44,8 +47,8 @@ struct ContentView: View {
                     switch activeSheet {
                     case .addView:
                         AddTaskView()
-                    case .updateView:
-                        Text("Update")
+                    case .updateView(let task):
+                        AddTaskView(task: task)
                     }
                 }
         }
@@ -65,12 +68,15 @@ struct ContentView: View {
             .foregroundColor(Color.black.opacity(0.4))
         } else {
             List {
-                ForEach (tasks) { task in
+                ForEach (_tasks.wrappedValue) { task in
                     HStack {
                         Text(priorityRepresentation[Int(task.priority)])
                             .foregroundColor(.red)
                             .fontWeight(.semibold)
                         Text(task.title ?? "N/A")
+                    }
+                    .onTapGesture {
+                        activeSheet = .updateView(task: task)
                     }
                 }
                 .onDelete(perform: deleteItems)
