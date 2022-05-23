@@ -24,6 +24,7 @@ struct ContentView: View {
             List (tasks) { task in
                 Text(task.title ?? "N/A")
             }
+            .listStyle(PlainListStyle())
             .navigationTitle("ToDo's")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
