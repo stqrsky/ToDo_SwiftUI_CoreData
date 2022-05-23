@@ -7,28 +7,37 @@
 
 import SwiftUI
 
-struct TodoItem: Identifiable {
-    let id = UUID()
-    let title: String
-}
+//struct TodoItem: Identifiable {
+//    let id = UUID()
+//    let title: String
+//}
 
 struct ContentView: View {
-    @State private var todoItems: [TodoItem] = [
-        .init(title: "Item 1"),
-        .init(title: "Item 2")
-    ]
-
-    
+    @Environment(\.managedObjectContext) var viewContext
+//
+//    @State private var todoItems: [TodoItem] = [
+//        .init(title: "Item 1"),
+//        .init(title: "Item 2")
+//    ]
+//
+//
     var body: some View {
         NavigationView {
-            List (todoItems) { todoItems in
-                Text(todoItems.title)
-            }
+//            List (todoItems) { todoItems in
+//                Text(todoItems.title)
+//            }
+            Text("Temp")
             .navigationTitle("ToDo's")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: {
-                        todoItems.append(.init(title: "Item \((0...9).randomElement()!)"))
+                        let newTask = Task(context: viewContext)
+                        newTask.title = "Test Titel 123"
+                        newTask.id = UUID()
+                        newTask.timestamp = Date()
+                        newTask.priority = 0
+                        
+                        try? viewContext.save()
                     }, label: {
                         Image(systemName: "plus")
                     })
