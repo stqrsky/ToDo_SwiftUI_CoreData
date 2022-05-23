@@ -14,19 +14,14 @@ import SwiftUI
 
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
-//
-//    @State private var todoItems: [TodoItem] = [
-//        .init(title: "Item 1"),
-//        .init(title: "Item 2")
-//    ]
-//
-//
+    
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Task.priority, ascending: false)]) var tasks: FetchedResults<Task>
+
     var body: some View {
         NavigationView {
-//            List (todoItems) { todoItems in
-//                Text(todoItems.title)
-//            }
-            Text("Temp")
+            List (tasks) { task in
+                Text(task.title ?? "N/A")
+            }
             .navigationTitle("ToDo's")
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
