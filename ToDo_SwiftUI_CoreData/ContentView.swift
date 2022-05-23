@@ -16,6 +16,8 @@ struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
     
     @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Task.priority, ascending: false)]) var tasks: FetchedResults<Task>
+    
+    @State private var presentSheet = false
 
     var body: some View {
         NavigationView {
@@ -26,18 +28,22 @@ struct ContentView: View {
             .toolbar {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: {
-                        let newTask = Task(context: viewContext)
-                        newTask.title = "Test Titel 123"
-                        newTask.id = UUID()
-                        newTask.timestamp = Date()
-                        newTask.priority = 0
-                        
-                        try? viewContext.save()
+                        presentSheet.toggle()
+//                        let newTask = Task(context: viewContext)
+//                        newTask.title = "Test Titel 123"
+//                        newTask.id = UUID()
+//                        newTask.timestamp = Date()
+//                        newTask.priority = 0
+//
+//                        try? viewContext.save()
                     }, label: {
                         Image(systemName: "plus")
                     })
                 }
             }
+            .sheet(isPresented: $presentSheet, content: {
+                AddTaskView()
+            })
         }
     }
 }
