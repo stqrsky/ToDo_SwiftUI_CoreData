@@ -22,14 +22,30 @@ struct ContentView: View {
 
     var body: some View {
         NavigationView {
-            List (tasks) { task in
-                HStack {
-                    Text(priorityRepresentation[Int(task.priority)])
-                        .foregroundColor(.red)
-                        .fontWeight(.semibold)
-                    Text(task.title ?? "N/A")
+            List {
+                ForEach (tasks) { task in
+                    HStack {
+                        Text(priorityRepresentation[Int(task.priority)])
+                            .foregroundColor(.red)
+                            .fontWeight(.semibold)
+                        Text(task.title ?? "N/A")
+                    }
                 }
+                .onDelete(perform: { indexSet in
+                    var tasksToDelete = Array<Task>()
+                    
+                    for index in indexSet {
+                        tasksToDelete.append(tasks[index])
+                    }
+                    
+                    for task in tasksToDelete {
+                        viewContext.delete(task)
+                    }
+                    
+                    try? viewContext.save()
+                })
             }
+            
             .listStyle(PlainListStyle())
             .navigationTitle("ToDo's")
             .toolbar {
