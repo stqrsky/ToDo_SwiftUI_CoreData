@@ -15,14 +15,20 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
     
-    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Task.priority, ascending: false)]) var tasks: FetchedResults<Task>
+    @FetchRequest(sortDescriptors: [NSSortDescriptor(keyPath: \Task.priority, ascending: false), NSSortDescriptor(keyPath: \Task.timestamp, ascending: true)]) var tasks: FetchedResults<Task>
     
     @State private var presentSheet = false
+    private var priorityRepresentation = ["", "!!", "!!!"]
 
     var body: some View {
         NavigationView {
             List (tasks) { task in
-                Text(task.title ?? "N/A")
+                HStack {
+                    Text(priorityRepresentation[Int(task.priority)])
+                        .foregroundColor(.red)
+                        .fontWeight(.semibold)
+                    Text(task.title ?? "N/A")
+                }
             }
             .listStyle(PlainListStyle())
             .navigationTitle("ToDo's")
@@ -30,13 +36,6 @@ struct ContentView: View {
                 ToolbarItem(placement: .primaryAction) {
                     Button(action: {
                         presentSheet.toggle()
-//                        let newTask = Task(context: viewContext)
-//                        newTask.title = "Test Titel 123"
-//                        newTask.id = UUID()
-//                        newTask.timestamp = Date()
-//                        newTask.priority = 0
-//
-//                        try? viewContext.save()
                     }, label: {
                         Image(systemName: "plus")
                     })

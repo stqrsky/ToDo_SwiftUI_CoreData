@@ -42,7 +42,7 @@ struct AddTaskView: View {
                         createTask()
                         presentationMode.wrappedValue.dismiss()
                     }
-                    .disabled(title.count == 0)
+                    .disabled(title.isEmpty)
                 }
             })
         }
