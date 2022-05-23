@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-//struct TodoItem: Identifiable {
-//    let id = UUID()
-//    let title: String
-//}
-
 struct ContentView: View {
     @Environment(\.managedObjectContext) var viewContext
     
@@ -19,9 +14,44 @@ struct ContentView: View {
     
     @State private var presentSheet = false
     private var priorityRepresentation = ["", "!!", "!!!"]
-
+    
     var body: some View {
         NavigationView {
+
+            taskView
+                .navigationTitle("ToDo's")
+                .toolbar {
+                    ToolbarItem(placement: .navigationBarLeading) {
+                        EditButton()
+                            .disabled(tasks.isEmpty)
+                    }
+                    ToolbarItem(placement: .primaryAction) {
+                        Button(action: {
+                            presentSheet.toggle()
+                        }, label: {
+                            Image(systemName: "plus")
+                        })
+                    }
+                }
+                .sheet(isPresented: $presentSheet, content: {
+                    AddTaskView()
+                })
+        }
+    }
+    
+    @ViewBuilder
+    var taskView: some View {
+        if tasks.isEmpty {
+            VStack(spacing: 30) {
+                Image(systemName: "tray.full")
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 60, height: 60)
+                Text("Keine Aufgaben")
+                    .font(.system(size: 30, weight: .semibold))
+            }
+            .foregroundColor(Color.black.opacity(0.4))
+        } else {
             List {
                 ForEach (tasks) { task in
                     HStack {
@@ -33,47 +63,13 @@ struct ContentView: View {
                 }
                 .onDelete(perform: deleteItems)
             }
-            
             .listStyle(PlainListStyle())
-            .navigationTitle("ToDo's")
-            .toolbar {
-                ToolbarItem(placement: .navigationBarLeading) {
-                    EditButton()
-                        .disabled(tasks.isEmpty)
-                }
-                ToolbarItem(placement: .primaryAction) {
-                    Button(action: {
-                        presentSheet.toggle()
-                    }, label: {
-                        Image(systemName: "plus")
-                    })
-                }
-            }
-            .sheet(isPresented: $presentSheet, content: {
-                AddTaskView()
-            })
         }
     }
     
     func deleteItems(offsets: IndexSet) {
         offsets.map { tasks[$0] }.forEach(viewContext.delete)
-        
-        
-        // #2 way
-//        tasksToDelete.forEach { task in
-//            viewContext.delete(task)
-//        }
-        // #1 way
-//        var tasksToDelete = Array<Task>()
-//
-//        for index in offsets {
-//            tasksToDelete.append(tasks[index])
-//        }
-//
-//        for task in tasksToDelete {
-//            viewContext.delete(task)
-//        }
-        
+
         try? viewContext.save()
     }
     
